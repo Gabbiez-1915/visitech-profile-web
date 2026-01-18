@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeri Proyek & Portofolio - VisiTech</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --primary-color: #0033cc;
+        --accent-color: #ff9900;
+        --dark-bg: #0a0a23;
+        --light-bg: #f8f9fa;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--light-bg);
+        overflow-x: hidden;
+      }
+
+      /* NAVBAR (Konsisten) */
+      .navbar {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 15px 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .navbar-brand img {
+        height: 70px;
+        width: auto;
+      }
+      .nav-link {
+        font-weight: 500;
+        color: #333;
+        margin: 0 5px;
+        transition: 0.3s;
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--primary-color);
+        transition: width 0.3s;
+      }
+      .nav-link:hover::after,
+      .nav-link.active::after {
+        width: 100%;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--primary-color) !important;
+      }
+
+      /* TOMBOL KONTAK */
+      .btn-contact {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 51, 204, 0.3);
+        transition: 0.3s;
+      }
+      .btn-contact:hover {
+        background-color: #002699;
+        transform: translateY(-2px);
+        color: white;
+      }
+
+      /* PAGE HEADER (Modern Look) */
+      .page-header {
+        background:
+          linear-gradient(135deg, rgba(0, 51, 204, 0.9), rgba(10, 10, 35, 0.9)),
+          url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+        margin-bottom: 0;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      }
+      .page-header h1 {
+        font-weight: 800;
+        font-size: 3.5rem;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* SECTION STYLES */
+      .section-padding {
+        padding: 80px 0;
+      }
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+      }
+      .section-title h2 {
+        font-weight: 800;
+        color: var(--dark-bg);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--accent-color);
+        margin: 15px auto;
+        border-radius: 50px;
+      }
+
+      /* GALERI FOTO (Hover Effect) */
+      .gallery-item {
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        height: 280px;
+        cursor: pointer;
+      }
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+      .gallery-overlay {
+        position: absolute;
+        bottom: -100%; /* Sembunyi dulu */
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 51, 204, 0.4)
+        );
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        transition: bottom 0.4s ease;
+      }
+      .gallery-item:hover .gallery-overlay {
+        bottom: 0; /* Muncul saat hover */
+      }
+      .gallery-cat {
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .gallery-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      /* SOFTWARE SHOWCASE CARDS */
+      .project-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #eee;
+      }
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 51, 204, 0.15);
+        border-color: var(--primary-color);
+      }
+      .project-thumb {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+      }
+      .project-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        transition: 0.5s;
+      }
+      .project-card:hover .project-thumb img {
+        transform: scale(1.05);
+      }
+      .project-body {
+        padding: 30px;
+      }
+      .tech-stack {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+      .badge-tech {
+        background: #eef2ff;
+        color: var(--primary-color);
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid rgba(0, 51, 204, 0.1);
+      }
+      .btn-project {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+      .btn-outline-primary-custom {
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+        background: transparent;
+      }
+      .btn-outline-primary-custom:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+      .btn-dark-custom {
+        background: var(--dark-bg);
+        color: white;
+        border: none;
+      }
+      .btn-dark-custom:hover {
+        background: #000;
+      }
+
+      /* CTA SECTION */
+      .cta-box {
+        background: linear-gradient(45deg, var(--primary-color), #001a66);
+        border-radius: 20px;
+        padding: 50px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      /* FOOTER (Konsisten) */
+      footer {
+        background-color: var(--dark-bg);
+        color: white;
+        padding-top: 80px;
+        padding-bottom: 20px;
+      }
+      footer h5 {
+        color: var(--accent-color);
+        font-weight: 700;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+      }
+      footer ul {
+        padding-left: 0;
+        list-style: none;
+      }
+      footer ul li {
+        margin-bottom: 12px;
+      }
+      footer a {
+        color: #ccc;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+      }
+      footer a:hover {
+        color: var(--accent-color);
+        padding-left: 8px;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 50px;
+        padding-top: 25px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="img/1.png" alt="Logo VisiTech" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layanan.html">Layanan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="produk.html">Produk</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="paket.html">Paket</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="project.html">Project</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="order.html">Order</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="tentang.html">Tentang Kami</a>
+            </li>
+          </ul>
+          <a
+            href="https://wa.me/6285156326643"
+            class="btn btn-contact rounded-pill ms-3"
+          >
+            <i class="bi bi-whatsapp"></i> Hubungi Kami
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="page-header">
+      <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+        <h1>Galeri & Portofolio</h1>
+        <p class="lead mt-3">
+          Bukti nyata dedikasi kami di lapangan dan kreativitas di dunia
+          digital.
+        </p>
+      </div>
+    </header>
+
+    <section class="section-padding">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>Dokumentasi Lapangan</h2>
+          <p class="text-muted">
+            Proses instalasi CCTV, Jaringan, dan Perbaikan Perangkat.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div
+            class="col-md-4 col-sm-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800&auto=format&fit=crop"
+                alt="Instalasi CCTV"
+              />
+              <div class="gallery-overlay">
+                <span class="gallery-cat">Security System</span>
+                <h5 class="gallery-title">Instalasi CCTV Outdoor</h5>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-md-4 col-sm-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop"
+                alt="Kabel Jaringan"
+              />
+              <div class="gallery-overlay">
+                <span class="gallery-cat">Network Engineering</span>
+                <h5 class="gallery-title">Cable Management Server</h5>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-md-4 col-sm-6"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?q=80&w=800&auto=format&fit=crop"
+                alt="Service Laptop"
+              />
+              <div class="gallery-overlay">
+                <span class="gallery-cat">Hardware Repair</span>
+                <h5 class="gallery-title">Perbaikan Mainboard Laptop</h5>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-md-4 col-sm-6"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop"
+                alt="Setting Router"
+              />
+              <div class="gallery-overlay">
+                <span class="gallery-cat">WiFi & Internet</span>
+                <h5 class="gallery-title">Konfigurasi Mikrotik</h5>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-md-8 col-sm-12"
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1531297461136-82lw9z215245?q=80&w=1200&auto=format&fit=crop"
+                alt="Tim IT"
+              />
+              <div class="gallery-overlay">
+                <span class="gallery-cat">Team Work</span>
+                <h5 class="gallery-title">Tim VisiTech Sedang Bertugas</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-padding bg-white">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>Software Development</h2>
+          <p class="text-muted">
+            Aplikasi dan Website yang telah kami kembangkan.
+          </p>
+        </div>
+
+        <div class="row g-5">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+            <div class="project-card">
+              <div class="project-thumb">
+                <img
+                  src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop"
+                  alt="Aplikasi Toko Sepatu"
+                />
+              </div>
+              <div class="project-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h4 class="fw-bold m-0">Aplikasi Toko Sepatu</h4>
+                  <span class="badge bg-primary rounded-pill">E-Commerce</span>
+                </div>
+                <p class="text-secondary mb-4">
+                  Sistem informasi manajemen untuk toko sepatu "Sikil Resik".
+                  Mengelola stok barang, transaksi kasir, laporan keuangan,
+                  hingga manajemen user secara digital.
+                </p>
+                <div class="tech-stack">
+                  <span class="badge-tech"
+                    ><i class="bi bi-code-slash"></i> PHP Native</span
+                  >
+                  <span class="badge-tech"
+                    ><i class="bi bi-database"></i> MySQL</span
+                  >
+                  <span class="badge-tech"
+                    ><i class="bi bi-bootstrap"></i> Bootstrap 5</span
+                  >
+                </div>
+                <div class="mt-4">
+                  <a
+                    href="https://github.com/Gabbiez-1915/TA-BTNG.git"
+                    target="_blank"
+                    class="btn btn-dark-custom btn-project"
+                  >
+                    <i class="bi bi-github"></i> Lihat Source Code
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+            <div class="project-card">
+              <div class="project-thumb">
+                <img
+                  src="https://images.unsplash.com/photo-1499750310159-5254f4cc1555?q=80&w=800&auto=format&fit=crop"
+                  alt="Website Portofolio"
+                />
+              </div>
+              <div class="project-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h4 class="fw-bold m-0">Personal Web & Journal</h4>
+                  <span class="badge bg-warning text-dark rounded-pill"
+                    >Blog System</span
+                  >
+                </div>
+                <p class="text-secondary mb-4">
+                  Platform website personal yang interaktif. Dilengkapi fitur
+                  jurnal harian, galeri foto dinamis, dan sistem komentar
+                  pengunjung. Desain responsif.
+                </p>
+                <div class="tech-stack">
+                  <span class="badge-tech"
+                    ><i class="bi bi-filetype-html"></i> HTML5/CSS3</span
+                  >
+                  <span class="badge-tech"
+                    ><i class="bi bi-braces"></i> Javascript</span
+                  >
+                  <span class="badge-tech"
+                    ><i class="bi bi-phone"></i> Responsive</span
+                  >
+                </div>
+                <div class="mt-4">
+                  <a
+                    href="https://jenismesin.free.nf/"
+                    target="_blank"
+                    class="btn btn-outline-primary-custom btn-project"
+                  >
+                    <i class="bi bi-globe"></i> Kunjungi Website
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container mb-5" data-aos="zoom-in" data-aos-delay="200">
+      <div class="cta-box">
+        <h2 class="fw-bold">Punya Ide Project?</h2>
+        <p class="mb-4">
+          Mari diskusikan kebutuhan software atau infrastruktur Anda bersama
+          kami. Gratis konsultasi!
+        </p>
+        <a
+          href="https://wa.me/6285156326643"
+          class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary"
+        >
+          <i class="bi bi-whatsapp"></i> Chat WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <h5 class="text-uppercase">VisiTech</h5>
+            <p class="text-white-50">
+              Partner IT terpercaya untuk kebutuhan Hardware, Software, dan
+              Keamanan Digital. Melayani area Semarang dan sekitarnya dengan
+              layanan Home Service.
+            </p>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <h5>Link Cepat</h5>
+            <ul class="list-unstyled">
+              <li><a href="index.html">Beranda</a></li>
+              <li><a href="layanan.html">Layanan</a></li>
+              <li><a href="produk.html">Produk & Sparepart</a></li>
+              <li><a href="paket.html">Daftar Harga</a></li>
+              <li><a href="project.html">Portofolio</a></li>
+              <li><a href="order.html">Cara Order</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <h5>Hubungi Kami</h5>
+            <p>
+              <i class="bi bi-whatsapp me-2 text-warning"></i> +62 851-5632-6643
+            </p>
+            <p>
+              <i class="bi bi-envelope-fill me-2 text-warning"></i>
+              info@visitech.id
+            </p>
+            <p>
+              <i class="bi bi-geo-alt-fill me-2 text-warning"></i> Semarang,
+              Jawa Tengah
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="mb-0">&copy; 2026 VisiTech. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        once: true,
+        offset: 120,
+        duration: 800,
+      });
+    </script>
+  </body>
+</html>
