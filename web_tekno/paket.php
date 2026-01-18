@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Harga & Paket - VisiTech</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0033cc;
+            --accent-color: #ff9900;
+            --dark-bg: #0a0a23;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR (Konsisten) */
+        .navbar {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .navbar-brand img {
+            height: 70px;
+            width: auto;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #333;
+            margin: 0 5px;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        /* TOMBOL KONTAK NAVBAR */
+        .btn-contact {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 51, 204, 0.3);
+            transition: 0.3s;
+        }
+        .btn-contact:hover {
+            background-color: #002699;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* HEADER PAGE */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: var(--light-bg);
+            transform: skewY(-3deg);
+        }
+        /* SECTION TITLE (Updated: Agar Pas Tengah) */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 800;
+            color: var(--dark-bg);
+            position: relative;
+            display: block; /* Menggunakan block agar mudah di margin auto */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 5px;
+            background: var(--accent-color);
+            margin: 15px auto; /* Auto margin agar garis di tengah */
+            border-radius: 50px;
+        }
+
+        /* PRICING CARD STYLES */
+        .card-pricing {
+            border: none;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: white;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+            text-align: center; /* Memastikan semua teks di kartu rata tengah */
+        }
+        .card-pricing:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 51, 204, 0.15);
+        }
+        .card-pricing.popular {
+            border: 2px solid var(--primary-color);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+        .card-pricing.popular:hover {
+            transform: scale(1.05) translateY(-15px);
+        }
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 3;
+        }
+
+        .card-header-price {
+            padding: 40px 30px 20px; /* Padding bawah dikurangi */
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .price-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+        .price-unit {
+            font-size: 0.9rem;
+            color: #999;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        .package-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-bg);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .card-body-features {
+            padding: 30px;
+            flex-grow: 1;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feature-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* KUNCI: Membuat list item berada di tengah */
+            color: #555;
+            font-size: 0.95rem;
+            text-align: center; /* Memastikan teksnya juga rata tengah */
+        }
+        .feature-list li i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+            flex-shrink: 0; /* Mencegah ikon mengecil */
+        }
+        .check-icon { color: #28a745; }
+        .cross-icon { color: #dc3545; opacity: 0.5; }
+
+        .card-footer-action {
+            padding: 0 30px 40px; /* Padding atas 0 karena sudah ada jarak */
+        }
+        .btn-choose {
+            width: 100%;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        .btn-primary-gradient {
+            background: linear-gradient(45deg, var(--primary-color), #0055ff);
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 51, 204, 0.3);
+        }
+        .btn-primary-gradient:hover {
+            background: linear-gradient(45deg, #002288, var(--primary-color));
+            transform: translateY(-2px);
+            color: white;
+        }
+        .btn-outline-custom {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        .btn-outline-custom:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* FOOTER (Konsisten) */
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding-top: 80px;
+            padding-bottom: 20px;
+            margin-top: 80px;
+        }
+        footer h5 {
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+        footer ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        footer ul li {
+            margin-bottom: 12px;
+        }
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        footer a:hover {
+            color: var(--accent-color);
+            padding-left: 8px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 50px;
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">
+                <img src="img/1.png" alt="Logo VisiTech"> 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="layanan.php">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="produk.php">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="paket.php">Paket</a></li>
+                    <li class="nav-item"><a class="nav-link" href="project.php">Project</a></li>
+                    <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+                </ul>
+                <a href="https://wa.me/6285156326643" class="btn btn-contact rounded-pill ms-3">
+                    <i class="bi bi-whatsapp"></i> Hubungi Kami
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+            <h1 class="fw-bold">Pilihan Paket & Harga</h1>
+            <p class="lead text-white-50">Solusi transparan dengan harga terpelajar dan kualitas profesional.</p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <h2 class="section-title" data-aos="fade-up">Paket Pembuatan Website</h2>
+        <div class="row align-items-center justify-content-center g-4">
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Landing Page</div>
+                        <div class="price-value">499rb</div>
+                        <div class="price-unit">Sekali Bayar</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> 1 Halaman Web (Single Page)</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Gratis Domain .com (1 Tahun)</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Mobile Responsive</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Tombol Link ke WhatsApp</li>
+                            <li><i class="bi bi-x-circle-fill cross-icon"></i> Tanpa Halaman Admin</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo%20VisiTech,%20saya%20minat%20Paket%20Landing%20Page" class="btn btn-outline-custom btn-choose">Pilih Paket</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-pricing popular">
+                    <div class="popular-badge">BEST SELLER</div>
+                    <div class="card-header-price">
+                        <div class="package-name">Company Profile</div>
+                        <div class="price-value">1.5jt</div>
+                        <div class="price-unit">Mulai dari</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> 5 Halaman Lengkap</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Gratis Domain .com & Hosting</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Desain Premium</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Gratis SSL (Aman)</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> SEO Basic Google</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo%20VisiTech,%20saya%20minat%20Paket%20Company%20Profile" class="btn btn-primary-gradient btn-choose">Pilih Paket</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Toko Online</div>
+                        <div class="price-value">3jt+</div>
+                        <div class="price-unit">Menyesuaikan Fitur</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Fitur Keranjang Belanja</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Halaman Admin Produk</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Integrasi Ongkir & WA</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Training Penggunaan</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Maintenance 1 Bulan</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo%20VisiTech,%20saya%20mau%20konsultasi%20Web%20Custom" class="btn btn-outline-custom btn-choose">Konsultasi Dulu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <br><hr><br>
+
+        <h2 class="section-title mt-5" data-aos="fade-up">Paket Rakit PC (Hardware)</h2>
+        <div class="row align-items-center justify-content-center g-4">
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Paket "Pelajar"</div>
+                        <div class="price-value">3.2jt</div>
+                        <div class="price-unit">Estimasi</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-cpu text-primary"></i> Intel Core i3 / Ryzen 3</li>
+                            <li><i class="bi bi-memory text-primary"></i> RAM 8GB DDR4</li>
+                            <li><i class="bi bi-device-ssd text-primary"></i> SSD 256GB (Ngebut)</li>
+                            <li><i class="bi bi-wrench-adjustable-circle check-icon"></i> Free Install Windows+Office</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo,%20saya%20tertarik%20Paket%20PC%20Pelajar" class="btn btn-outline-custom btn-choose">Konsultasi Spek</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-pricing popular">
+                    <div class="popular-badge">FAVORIT</div>
+                    <div class="card-header-price">
+                        <div class="package-name">Paket "Multimedia"</div>
+                        <div class="price-value">6.5jt</div>
+                        <div class="price-unit">Estimasi</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-cpu text-primary"></i> Core i5 / Ryzen 5</li>
+                            <li><i class="bi bi-gpu-card text-primary"></i> VGA GT 1030 2GB</li>
+                            <li><i class="bi bi-memory text-primary"></i> RAM 16GB Dual Channel</li>
+                            <li><i class="bi bi-device-ssd text-primary"></i> SSD NVMe 512GB</li>
+                            <li><i class="bi bi-gift-fill check-icon"></i> Free Install Photoshop/Corel</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo,%20saya%20tertarik%20Paket%20PC%20Multimedia" class="btn btn-primary-gradient btn-choose">Pesan Sekarang</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Paket "Gamer Sultan"</div>
+                        <div class="price-value">9.8jt+</div>
+                        <div class="price-unit">Estimasi</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-cpu text-primary"></i> Core i5 Gen 12 / Ryzen 5600</li>
+                            <li><i class="bi bi-gpu-card text-primary"></i> VGA RTX 3050 / GTX 1650</li>
+                            <li><i class="bi bi-memory text-primary"></i> RAM 16GB High Speed</li>
+                            <li><i class="bi bi-hdd text-primary"></i> SSD 512GB + HDD 1TB</li>
+                            <li><i class="bi bi-controller check-icon"></i> Bonus Game AAA</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Halo,%20saya%20tertarik%20Paket%20PC%20Gaming" class="btn btn-outline-custom btn-choose">Konsultasi Spek</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><hr><br>
+
+        <h2 class="section-title mt-5" data-aos="fade-up">Service & Maintenance</h2>
+        <div class="row align-items-center justify-content-center g-4">
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Deep Cleaning</div>
+                        <div class="price-value">100rb</div>
+                        <div class="price-unit">Per Unit</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Pembersihan Debu Total</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Ganti Thermal Paste Premium</li>
+                            <li><i class="bi bi-thermometer-half check-icon"></i> Suhu Turun 10-15 Derajat</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Saya%20mau%20booking%20Deep%20Cleaning" class="btn btn-outline-custom btn-choose">Booking</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Instalasi Ulang OS</div>
+                        <div class="price-value">75rb</div>
+                        <div class="price-unit">Mulai dari</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-windows check-icon"></i> Windows 10 / 11 Original</li>
+                            <li><i class="bi bi-check-circle-fill check-icon"></i> Driver & Office Lengkap</li>
+                            <li><i class="bi bi-shield-check check-icon"></i> Scan Virus Total</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Saya%20mau%20Install%20Ulang%20Laptop" class="btn btn-primary-gradient btn-choose">Booking</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Service Kerusakan</div>
+                        <div class="price-value">GRATIS</div>
+                        <div class="price-unit">Pengecekan</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-laptop"></i> Mati Total / Tidak Tampil</li>
+                            <li><i class="bi bi-keyboard"></i> Ganti Keyboard / LCD</li>
+                            <li><i class="bi bi-battery-charging"></i> Ganti Baterai</li>
+                            <li><i class="bi bi-patch-check-fill check-icon"></i> <strong>Garansi Service 1 Bulan</strong></li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Laptop%20saya%20rusak,%20mau%20konsultasi" class="btn btn-outline-custom btn-choose">Konsultasi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><hr><br>
+
+        <h2 class="section-title mt-5" data-aos="fade-up">Paket CCTV & Jaringan</h2>
+        <div class="row align-items-center justify-content-center g-4">
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">CCTV 4 Titik</div>
+                        <div class="price-value">2.8jt</div>
+                        <div class="price-unit">Terima Beres</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-camera-video-fill check-icon"></i> 4 Kamera (Indoor/Outdoor)</li>
+                            <li><i class="bi bi-hdd-fill check-icon"></i> DVR + HDD 500GB</li>
+                            <li><i class="bi bi-phone check-icon"></i> <strong>Online ke HP</strong></li>
+                            <li><i class="bi bi-tools check-icon"></i> Gratis Pasang & Kabel</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Saya%20minat%20Pasang%20CCTV%204%20Titik" class="btn btn-outline-custom btn-choose">Pasang Sekarang</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-pricing popular">
+                    <div class="popular-badge">CORPORATE</div>
+                    <div class="card-header-price">
+                        <div class="package-name">CCTV 8 Titik</div>
+                        <div class="price-value">5.5jt</div>
+                        <div class="price-unit">Terima Beres</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-camera-video-fill check-icon"></i> 8 Kamera Full HD</li>
+                            <li><i class="bi bi-hdd-fill check-icon"></i> DVR + HDD 1TB/2TB</li>
+                            <li><i class="bi bi-phone check-icon"></i> Monitoring Online 24 Jam</li>
+                            <li><i class="bi bi-shield-lock check-icon"></i> Garansi Unit 1 Tahun</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Saya%20minat%20Pasang%20CCTV%208%20Titik" class="btn btn-primary-gradient btn-choose">Pasang Sekarang</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-pricing">
+                    <div class="card-header-price">
+                        <div class="package-name">Instalasi Jaringan</div>
+                        <div class="price-value">150rb</div>
+                        <div class="price-unit">Jasa Per Titik</div>
+                    </div>
+                    <div class="card-body-features">
+                        <ul class="feature-list">
+                            <li><i class="bi bi-ethernet check-icon"></i> Penarikan Kabel LAN (Cat6)</li>
+                            <li><i class="bi bi-router check-icon"></i> Setting Mikrotik / Router WiFi</li>
+                            <li><i class="bi bi-wifi check-icon"></i> Perluasan Sinyal (Extender)</li>
+                            <li><i class="bi bi-check-circle check-icon"></i> Kabel Rapi & Berlabel</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="https://wa.me/6285156326643?text=Saya%20butuh%20instalasi%20jaringan%20kantor" class="btn btn-outline-custom btn-choose">Survei Lokasi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-5 text-center shadow-sm border-0" data-aos="zoom-in">
+            <i class="bi bi-info-circle-fill text-primary"></i> <strong>Catatan:</strong> Harga hardware (CCTV/PC) dapat berubah sewaktu-waktu mengikuti kurs dollar. Silakan hubungi kami untuk harga real-time.
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase">VisiTech</h5> 
+                    <p class="text-white-50">Partner IT terpercaya untuk kebutuhan Hardware, Software, dan Keamanan Digital. Melayani area Semarang dan sekitarnya dengan layanan Home Service.</p>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5>Link Cepat</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.php">Beranda</a></li>
+                        <li><a href="layanan.php">Layanan</a></li>
+                        <li><a href="produk.php">Produk & Sparepart</a></li>
+                        <li><a href="paket.php">Daftar Harga</a></li>
+                        <li><a href="project.php">Portofolio</a></li>
+                        <li><a href="order.php">Cara Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5>Hubungi Kami</h5>
+                    <p><i class="bi bi-whatsapp me-2 text-warning"></i> +62 851-5632-6643</p>
+                    <p><i class="bi bi-envelope-fill me-2 text-warning"></i> info@visitech.id</p>
+                    <p><i class="bi bi-geo-alt-fill me-2 text-warning"></i> Semarang, Jawa Tengah</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2026 VisiTech. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 120,
+            duration: 800
+        });
+    </script>
+</body>
+</html>
